@@ -53,4 +53,29 @@ const createUser = async (req, res) => {
     });
   }
 };
-export { getAllUsers,createUse };
+const deleterUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const affectedRows = await Users.destroy({ where: { UserId: id } });
+    if (!affectedRows) {
+      return res.status(404).send({ error: "Data not found" });
+    }
+    res.status(200).send({ message: "Data deleted successfully" });
+  } catch (error) {
+    res.status(500).send({ message: "Error deleting data", err: error });
+  }
+};
+
+const getOneuser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Users.findByPk(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    res.json(user);
+  } catch (error) {
+    res.status(500).send({ erro: "Error fetching user" });
+  }
+};
+export { getAllUsers, createUser };

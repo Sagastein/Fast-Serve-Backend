@@ -78,4 +78,4 @@ const getOneuser = async (req, res) => {
     res.status(500).send({ erro: "Error fetching user" });
   }
 };
-export { getAllUsers, createUser };
+module.exports =  { getAllUsers, createUser };

@@ -38,3 +38,35 @@ const Login = async (req, res) => {
     res.status(500).json({ error: "Error during login" });
   }
 };
+
+const ChangePassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { oldPassword, newPassword } = req.body;
+    if (!oldPassword || !newPassword)
+      return res.status(404).json({ message: "All fields are required" });
+
+    const user = await Users.findOne({ where: { UserId: id } });
+    if (!user) {
+      return res.status(401).json({ error: "Invalid credentials" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Invalid credentials(Password)" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    const result = await Users.update(
+      { password: hashedPassword },
+      { where: { id } }
+    );
+    res.status(201).json({
+      message: "Password Changed successfully",
+      data: result,
+    });
+  } catch (error) {
+    res.status(500).json({ error: "Error during login", error });
+  }
+};
+module.exports = { Login, ChangePassword };

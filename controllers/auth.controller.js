@@ -1,6 +1,4 @@
 const { Users, Account, Transaction } = require("../models");
-const bcrypt = require("bcrypt");
-const { SendEmail } = require("../config/Email.config");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();

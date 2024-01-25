@@ -19,6 +19,7 @@ const createUser = async (req, res) => {
         error: "All Fields Are Required",
       });
     }
+
     const userWithId = await Users.findOne({ where: { UserId } });
     const userWithEmail = await Users.findOne({ where: { email } });
     const userWithPhone = await Users.findOne({ where: { tel } });
@@ -78,4 +79,4 @@ const getOneuser = async (req, res) => {
     res.status(500).send({ erro: "Error fetching user" });
   }
 };
-module.exports =  { getAllUsers, createUser };
+module.exports = { getAllUsers, createUser, deleterUser, getOneuser };

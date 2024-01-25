@@ -1,6 +1,10 @@
 const { Device } = require("../models");
 const createDevice = async (req, res) => {
   try {
+    
+    //if not  "name", "price", "location", "status"
+    
+
     const device = await Device.create(req.body);
     res.status(201).json(device);
   } catch (error) {

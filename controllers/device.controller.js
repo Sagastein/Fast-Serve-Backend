@@ -1,9 +1,7 @@
 const { Device } = require("../models");
 const createDevice = async (req, res) => {
   try {
-    
     //if not  "name", "price", "location", "status"
-    
 
     const device = await Device.create(req.body);
     res.status(201).json(device);
@@ -102,6 +100,27 @@ const toggleDeviceStatus = async (req, res) => {
     res.status(500).json({ message: "Error updating device" });
   }
 };
+
+//toggle mode register or withdraw vircevice if current mode is register change to withdraw vircevice
+const toggleDeviceMode = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    const device = await Device.findByPk(id);
+    if (!device) {
+      return res.status(404).json({ message: "Device not found" });
+    }
+    device.mode = device.mode === "register" ? "withdraw" : "register";
+    await device.save();
+    return res
+      .status(200)
+      .json({ message: "Mode toggled successfully", mode: device.mode });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+};
+
 module.exports = {
   createDevice,
   getAllDevice,
@@ -109,4 +128,5 @@ module.exports = {
   updateDevice,
   deleteDevice,
   toggleDeviceStatus,
+  toggleDeviceMode,
 };

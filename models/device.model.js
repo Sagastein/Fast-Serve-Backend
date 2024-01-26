@@ -18,6 +18,15 @@ module.exports = (sequelize, Datatype) => {
       type: Datatype.STRING,
       allowNull: false,
     },
+    //device mode can be register or withdraw
+    mode: {
+      type: Datatype.STRING,
+      allowNull: false,
+      validate: {
+        isIn: [["register", "withdraw"]],
+      },
+      defaultValue: "register",
+    },
     status: {
       type: Datatype.STRING,
       allowNull: false,

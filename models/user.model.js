@@ -3,7 +3,7 @@ const moment = require("moment");
 module.exports = (sequelize, DataTypes) => {
   const Users = sequelize.define("Users", {
     UserId: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
     },

@@ -9,6 +9,7 @@ const {
   TransactionRouter,
   UserRouter,
   AuthRouter,
+  DashboardRouter,
 } = require("./routes");
 const { Account, Transaction, Device } = require("./models");
 
@@ -19,11 +20,11 @@ app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/auth", AuthRouter);
-// app.use("/api/account", AccountRouter);
 app.use("/api/device", DeviceRouter);
 app.use("/api/transaction", TransactionRouter);
 app.use("/api/users", UserRouter);
 app.use("/api/accounts", AccountRouter);
+app.use("/api/dashboards", DashboardRouter);
 const port = 8080;
 const cardIds = [];
 // app.get("/get/:id", (req, res) => {

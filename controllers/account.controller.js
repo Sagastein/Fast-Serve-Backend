@@ -40,4 +40,70 @@ const getAccountById = async (req, res) => {
     res.status(500).json({ message: "Error retrieving account" });
   }
 };
-module.exports = { createAccount, getAllACount, getAccountById };
+const getProfile = async (req, res) => {
+  const accountId = req.params.id;
+
+  try {
+    const user = await Users.findByPk(accountId);
+    if (!user) return res.status(404).json({ message: "No users found" });
+
+    const credits = await Transaction.sum("amount", {
+      where: {
+        UserId: accountId,
+        mode: "Credit",
+      },
+    });
+
+    const balance = await Account.findOne({
+      where: {
+        UserId: accountId,
+      },
+      attributes: ["AccountBalance"],
+    });
+
+    const debits = await Transaction.sum("amount", {
+      where: {
+        UserId: accountId,
+        mode: "Debit",
+      },
+    });
+    const userStatus = await Account.findOne({
+      where: {
+        UserId: accountId,
+      },
+      attributes: ["status"],
+    });
+    const result = {
+      total_credits: credits,
+      total_debits: debits,
+      balance: balance.AccountBalance,
+      userStatus: userStatus.status,
+    };
+
+    return res.json({ result: result, status: userStatus.status });
+  } catch (error) {
+    res.json(error);
+  }
+};
+const toggleAccount = async (req, res) => {
+  try {
+    const account = await Account.findByPk(req.params.id);
+
+    if (!account) {
+      return res.status(404).json({ message: "Account not found" });
+    }
+    account.status = account.status === "Active" ? "Blocked" : "Active";
+    await account.save();
+    res.status(200).json(account.toJSON());
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error toggling account status" });
+  }
+};
+module.exports = {
+  createAccount,
+  getAllACount,
+  getAccountById,
+  getProfile,
+  toggleAccount,
+};

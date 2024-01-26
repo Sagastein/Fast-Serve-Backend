@@ -1,6 +1,7 @@
 const { Users, Account, Transaction } = require("../models");
 const dotenv = require("dotenv");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 require("dotenv").config();
 const Login = async (req, res) => {
   try {
@@ -21,7 +22,7 @@ const Login = async (req, res) => {
       return res.status(401).json({ error: "Invalid credentials(Password)" });
     }
 
-    const token = jwt.sign({ user }, process.env.JWT_SECRET, {
+    const token = jwt.sign({ user }, "sadfjlnsda", {
       expiresIn: "5h",
     });
 

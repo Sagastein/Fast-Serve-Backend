@@ -7,11 +7,13 @@ const {
   getRecentTransactions,
   payment,
   deposit,
+  getTransactionsByUser,
 } = require("../controllers/transaction.controller");
 
 router.get("/", getAllTransactions);
 router.get("/recent", getRecentTransactions);
 router.post("/", deposit);
 router.post("/payment", payment);
+router.get("/:id", getTransactionsByUser);
 
 module.exports = router;

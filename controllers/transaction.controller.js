@@ -129,10 +129,27 @@ const deleteTransaction = async (req, res) => {
       .send({ message: "Error deleting Transaction", error: error });
   }
 };
+const getTransactionsByUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await Transaction.findAll({ where: { UserId: id } });
+    if (user.length == 0) {
+      return res
+        .status(404)
+        .json({ error: `No Transactions found with this ${id} Account Id` });
+    }
+    res.json(user);
+  } catch (error) {
+    res
+      .status(500)
+      .send({ error: "Error fetching Transactions", error: error });
+  }
+};
 module.exports = {
   getAllTransactions,
   getRecentTransactions,
   payment,
   deposit,
   deleteTransaction,
+  getTransactionsByUser,
 };

@@ -12,12 +12,13 @@ const {
   DashboardRouter,
 } = require("./routes");
 const { Account, Transaction, Device } = require("./models");
+//cors allow all
 
 var corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "*",
 };
 app.use(cookieParser());
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use("/api/auth", AuthRouter);
 app.use("/api/device", DeviceRouter);
